@@ -12,8 +12,8 @@ client.on("message", message => {
     if (message.content.startsWith('!hello')) {
         message.channel.send("Bonjour " + message.author + "!");
     };
-  if (message.content.startsWith('!tes')) {
-        message.channel.reply("Je suis là man");
+  if (message.content.startsWith('!test')) {
+        message.reply("Je suis là man");
         console.log("JE suis la gros");
     };
     if (message.content.startsWith('!bg')) {
