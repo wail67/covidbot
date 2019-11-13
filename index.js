@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 
-client.login("process.env.TOKEN");
+client.login(process.env.TOKEN);
 
 
 
@@ -11,6 +11,10 @@ client.on("message", message => {
     let args = message.content.trim().split(/ +/g)
     if (message.content.startsWith('!hello')) {
         message.channel.send("Bonjour " + message.author + "!");
+    };
+  if (message.content.startsWith('!tes')) {
+        message.channel.reply("Je suis là man");
+        console.log("JE suis la gros");
     };
     if (message.content.startsWith('!bg')) {
         message.channel.send( message.author + " Bien joué bg !");
