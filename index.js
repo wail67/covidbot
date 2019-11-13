@@ -76,29 +76,7 @@ client.on("message", message => {
         }
     };
 
-    if (message.content.startsWith("!unban")){
-        if (!message.guild.member(message.author).hasPermission('BAN_MEMBERS')) {
-            return message.channel.send('Vous n\'avez pas la permission !');
-        }
-        let banneduser = await bot.fetchUser(args[0])
-        if (banneduser) {
-            const member = banneduser;
-            if (member) {
-                    member.guild.unban(member).then(() => {
-                    message.reply(`${user.tag} a été deban avec succès `);
-                }).catch(err => {
-                    message.reply('Je n\'ai pas la permission de deban qui que ce soit');
-                    console.error(err);
-                });
-            } else {
-                // The mentioned user isn't in this guild
-                message.reply('Cette personne n\'est pas présente sur le serveur');
-            }
-        } else {
-            message.reply('Tu n\'a pas mentionné la personne à deban !');
-        }
-    };
-
+    
 });
 
 client.on("guildMemberAdd", user => {
