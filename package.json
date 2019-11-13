@@ -1,0 +1,6 @@
+{
+  "engines" : 
+  "scripts":{
+    "start" : "node index.js"
+  }
+}
