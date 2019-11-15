@@ -70,7 +70,7 @@ client.on("message", message => {
     fs.writeFileSync("./warns.json", JSON.stringify(warns));
      message.channel.send("Vous ne pouvez pas warn ce membre");
     
-     message.channel.bulkDelete(2, true)
+     return message.channel.bulkDelete(2, true)
     }
     
     const user = message.mentions.users.first();
