@@ -58,10 +58,7 @@ client.on("message", message => {
 
   if (message.content.startsWith("!ban")) {
     if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
-      return message.channel.send("Vous n'avez pas la permission !");
-    }else{
-      let member = message.author;
-         return message.channel.send("Vous ne pouvez pas warn ce membre");
+    return message.channel.send("Vous ne pouvez pas warn ce membre");
     let reason = "Utilisation de commande inaproprié";
     if (!reason) return message.channel.send("Veuillez indiquer une raison");
     if (!warns[member.id]) {
@@ -73,6 +70,7 @@ client.on("message", message => {
       mod: message.author.id
     });
     fs.writeFileSync("./warns.json", JSON.stringify(warns));
+    }
     }
     const user = message.mentions.users.first();
     if (user) {
