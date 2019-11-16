@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
+
 
 client.login(process.env.TOKEN);
 
@@ -270,4 +272,16 @@ client.on("guildMemberAdd", user => {
     .send(
       "https://giphy.com/gifs/welcome-austin-powers-dr-evil-l0MYC0LajbaPoEADu"
     );
+});
+
+fs.readdir('./Commandes/', (error, f) => {
+    if (error) { return console.error(error); }
+        let commandes = f.filter(f => f.split('.').pop() === 'js');
+        if (commandes.length <= 0) { return console.log('Aucune commande trouvée !'); }
+
+        commandes.forEach((f) => {
+            let commande = require(`./Commandes/${f}`);
+            console.log(`${f} commande chargée !`);
+            client.commands.set(commande.help.name, commande);
+        });
 });
