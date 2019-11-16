@@ -1,33 +1,36 @@
 const Discord = require('discord.js');
 
 module.exports.run = (client, message, args) => {
-    if (!message.guild.member(message.author).hasPermission('BAN_MEMBERS')) { return message.channel.send('Vous n\'avez pas la permission !'); }
-    if (!message.guild.member(client.user).hasPermission('BAN_MEMBERS')) { return message.channel.send('Le bot n\'a pas la permission !'); }
-    if (message.mentions.users.size === 0) { return message.channel.send('Vous devez mentionner un utilisateur !'); }
-
-        let banMember = message.guild.member(message.mentions.users.first());
-        if (!banMember) { return message.channel.send('Je n\'ai pas trouvé l\'utilisateur !'); }
-    
-        message.mentions.users.first().send(`Vous êtes banni du serveur **${message.guild.name}** par ${message.author.username}`)
-            .then(() => {
-                banMember.ban()
-                    .then((member) => {
-                        message.channel.send(`${member.user.username} est ban ! Par ${message.author.username}`);
-                    })
-                        .catch((err) => {
-                            if (err) { return console.error(err); }
-                        });
-            })
-                .catch((error) => {
-                    if (error) { console.error(error); }
-                        banMember.ban()
-                            .then((member) => {
-                                message.channel.send(`${member.user.username} est ban ! Par ${message.author.username}`);
-                            })
-                                .catch((err) => {
-                                    if (err) { return console.error(err); }
-                                });
-                });
+    if (!message.guild.member(message.author).hasPermission("KICK_MEMBERS")) {
+      return message.channel.send("Vous n'avez pas la permission !");
+    }
+    const user = message.mentions.users.first();
+    if (user) {
+      const member = message.guild.member(user);
+      if (member) {
+        let reason = args.slice(2).join(" ");
+        if (!reason)
+          return message.channel.send("Veuillez indiquer une raison");
+        member
+          .kick(reason)
+          .then(() => {
+            message.reply(
+              `${user.tag} a été kick avec succès pour la raison suivante: ` +
+                reason
+            );
+          })
+          .catch(err => {
+            message.reply("Je n'ai pas la permission de kick qui que ce soit");
+            console.error(err);
+          });
+      } else {
+        // The mentioned user isn't in this guild
+        message.reply("Cette personne n'est pas présente sur le serveur");
+      }
+    } else {
+      message.reply("Tu n'a pas mentionné la personne à kick !");
+    }
+  
 };
 
 module.exports.help = {
