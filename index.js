@@ -23,6 +23,22 @@ client.on("message", message => {
     // Send the user's avatar URL
     message.channel.send(message.author.avatarURL);
   }
+if(!message.guild.member(message.author).hasPermission("KICK_MEMBERS,BAN_MEMBERS,MANAGE_MESSAGE,ADMINISTRATION")) {
+    console.log(1);
+    let member = message.guild.member(message.author);
+    let reason = "Utilisation de commande d'admin";
+    if (!warns[member.id]) {
+      warns[member.id] = [];
+    }
+    warns[member.id].unshift({
+      reason: reason,
+      date: Date.now(),
+    });
+    fs.writeFileSync("./warns.json", JSON.stringify(warns));
+     message.channel.send("Vous ne pouvez pas warn ce membre");
+    
+     return message.channel.bulkDelete(2, true)
+    }
 
   if (message.content.startsWith("!kick")) {
     if (!message.guild.member(message.author).hasPermission("KICK_MEMBERS")) {
@@ -58,20 +74,7 @@ client.on("message", message => {
 
   if (message.content.startsWith("!ban")) {
     if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
-    let member = message.guild.member(message.author);
-    let reason = "Utilisation de commande inaproprié";
-    if (!warns[member.id]) {
-      warns[member.id] = [];
-    }
-    warns[member.id].unshift({
-      reason: reason,
-      date: Date.now(),
-    });
-    fs.writeFileSync("./warns.json", JSON.stringify(warns));
-     message.channel.send("Vous ne pouvez pas warn ce membre");
-    
-     return message.channel.bulkDelete(2, true)
-    }
+
     
     const user = message.mentions.users.first();
     if (user) {
@@ -202,7 +205,7 @@ client.on("message", message => {
         if(muterole && member.roles.has(muterole.id)) member.removeRole(muterole)
         message.channel.send(member + ' a été unmute :white_check_mark:')
   }
-});
+}});
 
 
 
