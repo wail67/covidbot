@@ -58,21 +58,21 @@ client.on("message", message => {
 
   if (message.content.startsWith("!ban")) {
     if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
-    let member = message.guild.member(message.author);
-    let reason = "Utilisation de commande inaproprié";
-    if (!warns[member.id]) {
-      warns[member.id] = [];
+      let member = message.guild.member(message.author);
+      let reason = "Utilisation de commande inaproprié";
+      if (!warns[member.id]) {
+        warns[member.id] = [];
+      }
+      warns[member.id].unshift({
+        reason: reason,
+        date: Date.now()
+      });
+      fs.writeFileSync("./warns.json", JSON.stringify(warns));
+      message.channel.send("Vous ne pouvez pas warn ce membre");
+
+      return message.channel.bulkDelete(2, true);
     }
-    warns[member.id].unshift({
-      reason: reason,
-      date: Date.now(),
-    });
-    fs.writeFileSync("./warns.json", JSON.stringify(warns));
-     message.channel.send("Vous ne pouvez pas warn ce membre");
-    
-     return message.channel.bulkDelete(2, true)
-    }
-    
+
     const user = message.mentions.users.first();
     if (user) {
       const member = message.guild.member(user);
@@ -98,8 +98,9 @@ client.on("message", message => {
       }
     } else {
       message.reply("Tu n'a pas mentionné la personne à ban !");
-    }}
-  
+    }
+  }
+
   if (message.content.startsWith("!warn")) {
     if (!message.member.hasPermission("MANAGE_MESSAGES"))
       return message.channel.send(
@@ -146,69 +147,94 @@ client.on("message", message => {
       .setTimestamp();
     message.channel.send(embed);
   }
-  
-  if (message.content.startsWith("!unwarn")) {
-  let member = message.mentions.members.first()
-        if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande.")
-        if(!member) return message.channel.send("Membre introuvable")
-        if(member.highestRole.calculatedPosition >= message.member.highestRole.calculatedPosition && message.author.id !== message.guild.ownerID) return message.channel.send("Vous ne pouvez pas unwarn ce membre.")
-        if(!member.manageable) return message.channel.send("Je ne pas unwarn ce membre.")
-        if(!warns[member.id] || !warns[member.id].length) return message.channel.send("Ce membre n'a actuellement aucun warns.")
-        warns[member.id].shift()
-        fs.writeFileSync('./warns.json', JSON.stringify(warns))
-        message.channel.send("Le dernier warn de " + member + " a été retiré :white_check_mark:")
-  }
-  if (message.content.startsWith("!clear")) {
-  if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande")
-        let count = parseInt(args[1])
-        if (!count) return message.channel.send("Veuillez indiquer un nombre de messages à supprimer")
-        if (isNaN(count)) return message.channel.send("Veuillez indiquer un nombre valide")
-        if (count < 1 || count > 100) return message.channel.send("Veuillez indiquer un nombre entre 1 et 1000")
-        message.channel.bulkDelete(count + 1, true)
-  }
-  
-  
-  if (message.content.startsWith("!mute")){
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande")
-        let member = message.mentions.members.first()
-        if (!member) return message.channel.send("Membre introuvable")
-        if (member.highestRole.calculatedPosition >= message.member.highestRole.calculatedPosition && message.author.id !== message.guild.ownerID) return message.channel.send("Vous ne pouvez pas mute ce membre")
-        if (!member.manageable) return message.channel.send("Je ne peux pas mute ce membre")
-        let muterole = message.guild.roles.find(role => role.name === 'Muted')
-        if (muterole) {
-            member.addRole(muterole)
-            message.channel.send(member + ' a été mute :white_check_mark:')
-        }
-        else {
-            message.guild.createRole({name: 'Muted', permissions: 0}).then(function (role) {
-                message.guild.channels.filter(channel => channel.type === 'text').forEach(function (channel) {
-                    channel.overwritePermissions(role, {
-                        SEND_MESSAGES: false
-                    })
-                })
-                member.addRole(role)
-                message.channel.send(member + ' a été mute :white_check_mark:')
-            })
-        }
-}
 
-  if (message.content.startsWith("!unmute")){  
-  if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande.")
-        let member = message.mentions.members.first()
-        if(!member) return message.channel.send("Membre introuvable")
-        if(member.highestRole.calculatedPosition >= message.member.highestRole.calculatedPosition && message.author.id !== message.guild.ownerID) return message.channel.send("Vous ne pouvez pas unmute ce membre.")
-        if(!member.manageable) return message.channel.send("Je ne pas unmute ce membre.")
-        let muterole = message.guild.roles.find(role => role.name === 'Muted')
-        if(muterole && member.roles.has(muterole.id)) member.removeRole(muterole)
-        message.channel.send(member + ' a été unmute :white_check_mark:')
+  if (message.content.startsWith("!unwarn")) {
+    let member = message.mentions.members.first();
+    if (!message.member.hasPermission("MANAGE_MESSAGES"))
+      return message.channel.send(
+        "Vous n'avez pas la permission d'utiliser cette commande."
+      );
+    if (!member) return message.channel.send("Membre introuvable");
+    if (
+      member.highestRole.calculatedPosition >=
+        message.member.highestRole.calculatedPosition &&
+      message.author.id !== message.guild.ownerID
+    )
+      return message.channel.send("Vous ne pouvez pas unwarn ce membre.");
+    if (!member.manageable)
+      return message.channel.send("Je ne pas unwarn ce membre.");
+    if (!warns[member.id] || !warns[member.id].length)
+      return message.channel.send("Ce membre n'a actuellement aucun warns.");
+    warns[member.id].shift();
+    fs.writeFileSync("./warns.json", JSON.stringify(warns));
+    message.channel.send(
+      "Le dernier warn de " + member + " a été retiré :white_check_mark:"
+    );
+  }
+  if (message.content.startsWith("!clearall")) {
+    if (!message.member.hasPermission("MANAGE_MESSAGES"))
+      return message.channel.send(
+        "Vous n'avez pas la permission d'utiliser cette commande"
+      );
+    message.channel.bulkDelete();
+  }
+
+  if (message.content.startsWith("!mute")) {
+    if (!message.member.hasPermission("MANAGE_MESSAGES"))
+      return message.channel.send(
+        "Vous n'avez pas la permission d'utiliser cette commande"
+      );
+    let member = message.mentions.members.first();
+    if (!member) return message.channel.send("Membre introuvable");
+    if (
+      member.highestRole.calculatedPosition >=
+        message.member.highestRole.calculatedPosition &&
+      message.author.id !== message.guild.ownerID
+    )
+      return message.channel.send("Vous ne pouvez pas mute ce membre");
+    if (!member.manageable)
+      return message.channel.send("Je ne peux pas mute ce membre");
+    let muterole = message.guild.roles.find(role => role.name === "Muted");
+    if (muterole) {
+      member.addRole(muterole);
+      message.channel.send(member + " a été mute :white_check_mark:");
+    } else {
+      message.guild
+        .createRole({ name: "Muted", permissions: 0 })
+        .then(function(role) {
+          message.guild.channels
+            .filter(channel => channel.type === "text")
+            .forEach(function(channel) {
+              channel.overwritePermissions(role, {
+                SEND_MESSAGES: false
+              });
+            });
+          member.addRole(role);
+          message.channel.send(member + " a été mute :white_check_mark:");
+        });
+    }
+  }
+
+  if (message.content.startsWith("!unmute")) {
+    if (!message.member.hasPermission("MANAGE_MESSAGES"))
+      return message.channel.send(
+        "Vous n'avez pas la permission d'utiliser cette commande."
+      );
+    let member = message.mentions.members.first();
+    if (!member) return message.channel.send("Membre introuvable");
+    if (
+      member.highestRole.calculatedPosition >=
+        message.member.highestRole.calculatedPosition &&
+      message.author.id !== message.guild.ownerID
+    )
+      return message.channel.send("Vous ne pouvez pas unmute ce membre.");
+    if (!member.manageable)
+      return message.channel.send("Je ne pas unmute ce membre.");
+    let muterole = message.guild.roles.find(role => role.name === "Muted");
+    if (muterole && member.roles.has(muterole.id)) member.removeRole(muterole);
+    message.channel.send(member + " a été unmute :white_check_mark:");
   }
 });
-
-
-
-
-
-
 
 client.on("guildMemberAdd", user => {
   user.guild.channels
