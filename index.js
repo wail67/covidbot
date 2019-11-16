@@ -23,11 +23,11 @@ client.on("message", message => {
     // Send the user's avatar URL
     message.channel.send(message.author.avatarURL);
   }
-if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBERS","MANAGE_MESSAGES")) {
-   if (message.content.startsWith("!kick")) {
-    
+
+  if (message.content.startsWith("!kick")) {
+    if (!message.guild.member(message.author).hasPermission("KICK_MEMBERS")) {
       return message.channel.send("Vous n'avez pas la permission !");
-    
+    }
     const user = message.mentions.users.first();
     if (user) {
       const member = message.guild.member(user);
@@ -57,7 +57,21 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
   }
 
   if (message.content.startsWith("!ban")) {
+    if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
+    let member = message.guild.member(message.author);
+    let reason = "Utilisation de commande inaproprié";
+    if (!warns[member.id]) {
+      warns[member.id] = [];
+    }
+    warns[member.id].unshift({
+      reason: reason,
+      date: Date.now(),
+    });
+    fs.writeFileSync("./warns.json", JSON.stringify(warns));
+     message.channel.send("Vous ne pouvez pas warn ce membre");
     
+     return message.channel.bulkDelete(2, true)
+    }
     
     const user = message.mentions.users.first();
     if (user) {
@@ -84,10 +98,13 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
       }
     } else {
       message.reply("Tu n'a pas mentionné la personne à ban !");
-    }
+    }}
   
   if (message.content.startsWith("!warn")) {
-
+    if (!message.member.hasPermission("MANAGE_MESSAGES"))
+      return message.channel.send(
+        "Vous n'avez pas la permission d'utiliser cette commande"
+      );
     let member = message.mentions.members.first();
     if (!member) return message.channel.send("Veuillez mentionner un membre");
     if (
@@ -112,7 +129,10 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
     );
   }
   if (message.content.startsWith("!infra")) {
-
+    if (!message.member.hasPermission("MANAGE_MESSAGES"))
+      return message.channel.send(
+        "Vous n'avez pas la permission d'utiliser cette commande"
+      );
     let member = message.mentions.members.first();
     if (!member) return message.channel.send("Veuillez mentionner un membre");
     let embed = new Discord.RichEmbed()
@@ -129,6 +149,7 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
   
   if (message.content.startsWith("!unwarn")) {
   let member = message.mentions.members.first()
+        if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande.")
         if(!member) return message.channel.send("Membre introuvable")
         if(member.highestRole.calculatedPosition >= message.member.highestRole.calculatedPosition && message.author.id !== message.guild.ownerID) return message.channel.send("Vous ne pouvez pas unwarn ce membre.")
         if(!member.manageable) return message.channel.send("Je ne pas unwarn ce membre.")
@@ -138,7 +159,7 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
         message.channel.send("Le dernier warn de " + member + " a été retiré :white_check_mark:")
   }
   if (message.content.startsWith("!clear")) {
-  
+  if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande")
         let count = parseInt(args[1])
         if (!count) return message.channel.send("Veuillez indiquer un nombre de messages à supprimer")
         if (isNaN(count)) return message.channel.send("Veuillez indiquer un nombre valide")
@@ -148,7 +169,7 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
   
   
   if (message.content.startsWith("!mute")){
-        
+        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande")
         let member = message.mentions.members.first()
         if (!member) return message.channel.send("Membre introuvable")
         if (member.highestRole.calculatedPosition >= message.member.highestRole.calculatedPosition && message.author.id !== message.guild.ownerID) return message.channel.send("Vous ne pouvez pas mute ce membre")
@@ -172,7 +193,7 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
 }
 
   if (message.content.startsWith("!unmute")){  
-  
+  if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas la permission d'utiliser cette commande.")
         let member = message.mentions.members.first()
         if(!member) return message.channel.send("Membre introuvable")
         if(member.highestRole.calculatedPosition >= message.member.highestRole.calculatedPosition && message.author.id !== message.guild.ownerID) return message.channel.send("Vous ne pouvez pas unmute ce membre.")
@@ -181,25 +202,7 @@ if(message.guild.member(message.author).hasPermission("KICK_MEMBERS","BAN_MEMBER
         if(muterole && member.roles.has(muterole.id)) member.removeRole(muterole)
         message.channel.send(member + ' a été unmute :white_check_mark:')
   }
-   
-    }else{
-       let member = message.guild.member(message.author);
-    let reason = "Utilisation de commande d'admin";
-    if (!warns[member.id]) {
-      warns[member.id] = [];
-    }
-    warns[member.id].unshift({
-      reason: reason,
-      date: Date.now(),
-    });
-    fs.writeFileSync("./warns.json", JSON.stringify(warns));
-     message.channel.send("Vous ne pouvez pas warn ce membre");
-    
-     return message.channel.bulkDelete(2, true)
-    }
-
- 
-}});
+});
 
 
 
