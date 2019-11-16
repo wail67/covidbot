@@ -188,7 +188,7 @@ client.on("message", message => {
             // We want to check if the argument is a number
             if (isNaN(args[1])) {
                 // Sends a message to the channel.
-                message.channel.send('Please use a number as your arguments. \n Usage:  ! purge <amount>'); //\n means new line.
+                message.channel.send('Please use a number as your arguments. \n Usage:  !clear <amount>'); //\n means new line.
                 // Cancels out of the script, so the rest doesn't run.
                 return;
             }
