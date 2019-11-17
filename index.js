@@ -6,7 +6,7 @@ const fs = require("fs");
 
 
 
-const warns = JSON.parse(fs.readFileSync("./warns.json"));
+
 
 client.on("guildMemberAdd", user => {
   user.guild.channels

@@ -24,7 +24,7 @@ module.exports.run = (client, message, args,warns) => {
       date: Date.now(),
       mod: message.author.id
     });
-    fs.writeFileSync("../warns.json", JSON.stringify(warns));
+    fs.writeFileSync("./warns.json", JSON.stringify(warns));
     message.channel.send(
       member + " a été warn pour " + reason + " :white_check_mark:"
     );
