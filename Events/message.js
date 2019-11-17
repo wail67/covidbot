@@ -4,6 +4,7 @@ const fs = require("fs");
 module.exports = (client, message) => {
     if (message.author.bot || message.channel.type === 'dm') { return; }
     if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) { return; }
+    if(!message.channel.id === 644670906375077898) return;
     if (!message.content.startsWith(prefix)) { return; }
                 
         const warns = JSON.parse(fs.readFileSync("./warns.json"));
