@@ -6,7 +6,7 @@ module.exports = (client, message) => {
     if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) { return; }
     if (!message.content.startsWith(prefix)) { return; }
 
-        let args = message.content.slice(prefix.length).trim().split(/ +/g);
+        let args = message.content.trim().split(/ +/g);
         let commande = args.shift();
         let cmd = client.commands.get(commande);
 

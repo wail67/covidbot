@@ -15,8 +15,8 @@ module.exports.run = (client, message, args,warns) => {
     )
       return message.channel.send("Vous ne pouvez pas warn ce membre");
     let reason = args.slice(2).join(" ");
-    if (!reason)   {  message.channel.send(reason)
-  console.log("Veuillez indiquer une raison");}
+    message.channel.send("Veuillez indiquer une raison" +reason);
+    if (!reason) return message.channel.send("Veuillez indiquer une raison");
     if (!warns[member.id]) {
       warns[member.id] = [];
     }
@@ -25,6 +25,7 @@ module.exports.run = (client, message, args,warns) => {
       date: Date.now(),
       mod: message.author.id
     });
+  
     fs.writeFileSync("../warns.json", JSON.stringify(warns));
     message.channel.send(
       member + " a été warn pour " + reason + " :white_check_mark:"
