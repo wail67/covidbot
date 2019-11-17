@@ -7,7 +7,6 @@ module.exports = (client, message) => {
     if (!message.content.startsWith(prefix)) { return; }
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        console.log(args)
         let commande = args.shift();
         let cmd = client.commands.get(commande);
 
