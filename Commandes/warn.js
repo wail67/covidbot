@@ -14,8 +14,7 @@ module.exports.run = (client, message, args,warns) => {
       message.author.id !== message.guild.ownerID
     )
       return message.channel.send("Vous ne pouvez pas warn ce membre");
-    let reason = args.slice(2).join(" ");
-    message.channel.send("Veuillez indiquer une raison" +reason);
+    message.channel.send(args);
     if (!reason) return message.channel.send("Veuillez indiquer une raison");
     if (!warns[member.id]) {
       warns[member.id] = [];
