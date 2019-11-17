@@ -1,33 +1,49 @@
 const Discord = require('discord.js');
+const fs = require("fs");
 
-module.exports.run = (client, message, args) => {
-    if (!message.guild.member(message.author).hasPermission('BAN_MEMBERS')) { return message.channel.send('Vous n\'avez pas la permission !'); }
-    if (!message.guild.member(client.user).hasPermission('BAN_MEMBERS')) { return message.channel.send('Le bot n\'a pas la permission !'); }
-    if (message.mentions.users.size === 0) { return message.channel.send('Vous devez mentionner un utilisateur !'); }
+module.exports.run = (client, message, args, warns) => {
+    if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
+      let member = message.guild.member(message.author);
+      let reason = "Utilisation de commande inaproprié";
+      if (!warns[member.id]) {
+        warns[member.id] = [];
+      }
+      warns[member.id].unshift({
+        reason: reason,
+        date: Date.now()
+      });
+      fs.writeFileSync("./warns.json", JSON.stringify(warns));
+      message.channel.send("Vous ne pouvez pas warn ce membre");
 
-        let banMember = message.guild.member(message.mentions.users.first());
-        if (!banMember) { return message.channel.send('Je n\'ai pas trouvé l\'utilisateur !'); }
-    
-        message.mentions.users.first().send(`Vous êtes banni du serveur **${message.guild.name}** par ${message.author.username}`)
-            .then(() => {
-                banMember.ban()
-                    .then((member) => {
-                        message.channel.send(`${member.user.username} est ban ! Par ${message.author.username}`);
-                    })
-                        .catch((err) => {
-                            if (err) { return console.error(err); }
-                        });
-            })
-                .catch((error) => {
-                    if (error) { console.error(error); }
-                        banMember.ban()
-                            .then((member) => {
-                                message.channel.send(`${member.user.username} est ban ! Par ${message.author.username}`);
-                            })
-                                .catch((err) => {
-                                    if (err) { return console.error(err); }
-                                });
-                });
+      return message.channel.bulkDelete(2, true);
+    }
+
+    const user = message.mentions.users.first();
+    if (user) {
+      const member = message.guild.member(user);
+      if (member) {
+        let reason = args.slice(2).join(" ");
+        let day = args.slice(3).join(" ");
+        console.log(day);
+        member.guild
+          .ban(member, {
+            days: day,
+            reason: reason
+          })
+          .then(() => {
+            message.reply(`${user.tag} a été ban avec succès `);
+          })
+          .catch(err => {
+            message.reply("Je n'ai pas la permission de ban cette personne");
+            console.error(err);
+          });
+      } else {
+        // The mentioned user isn't in this guild
+        message.reply("Cette personne n'est pas présente sur le serveur");
+      }
+    } else {
+      message.reply("Tu n'a pas mentionné la personne à ban !");
+    }
 };
 
 module.exports.help = {

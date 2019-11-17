@@ -8,7 +8,6 @@ const fs = require("fs");
 
 const warns = JSON.parse(fs.readFileSync("./warns.json"));
 
-
 client.on("guildMemberAdd", user => {
   user.guild.channels
     .get("642763590985580594")
@@ -31,6 +30,7 @@ fs.readdir('./Commandes/', (error, f) => {
             console.log(`${f} commande chargée !`);
             client.commands.set(commande.help.name, commande);
         });
+  
 });
 
 fs.readdir('./Events/', (error, f) => {
