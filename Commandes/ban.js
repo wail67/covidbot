@@ -23,14 +23,17 @@ module.exports.run = (client, message, args, warns) => {
       const member = message.guild.member(user);
       if (member) {
         let reason = args.slice(2).join(" ");
-        let day = args.slice(3).join(" ");
+        if(!reason) return
+        let day = args.slice(0).join("for");
+        console.log(day)
         console.log(day);
         member.guild.ban(member, {days: 7, reason: reason})
           .then(() => {
       let embed = new Discord.RichEmbed()
-      .setAuthor(message.author)
-      .setColor("ed2c13")
+      .setColor('#ed2c13')
+      .setAuthor("Mon Bot")
       .addField("Ban par:",""+ message.author.username)
+      .addField("Pseudo", + member)
       .addField("Id : ",""+ member.guild.id)
       .addField("Raison : ",""+ reason)
       .setTimestamp();
