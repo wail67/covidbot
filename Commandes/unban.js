@@ -3,23 +3,30 @@ const fs = require("fs");
 const superagent = require("superagent")
 
 module.exports.run = async (client, message, args, warns) => {
-  if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
+ 
 
-    let bannedMember = client.fetchUser(args[1])
-    if(!bannedMember) return message.channel.send("Please provide a user id to unban someone!")
-    
+    if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
+
+		
+	if(isNaN(args[1])) return message.channel.send("You need to provide an ID.")
+  const member = message.guild.member(args[1])
+  message.reply(member)
+    let bannedMember = await client.fetchUser(args[1])
+        if(!bannedMember) return message.channel.send("Please provide a user id to unban someone!")
+
     let reason = args.slice(2).join(" ")
         if(!reason) reason = "No reason given!"
-    if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command!")|
+
+    if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command!")|
     message.delete()
     try {
-        message.guild.unban(bannedMember, {reason: reason})
+        message.guild.unban(bannedMember, reason)
         message.channel.send(`${bannedMember.tag} has been unbanned from the guild!`)
     } catch(e) {
         console.log(e.message)
     }
 
-    let embed = new Discord.RichEmbed()
+    let embed = new RichEmbed()
     .setColor("#f94343")
     .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
     .addField("Moderation:", "unban")
@@ -28,8 +35,9 @@ module.exports.run = async (client, message, args, warns) => {
     .addField("Reason:", reason)
     .addField("Date:", message.createdAt.toLocaleString())
     
-        let sChannel = message.guild.channels.find(c => c.name === "commande-admin")
+        let sChannel = message.guild.channels.find(c => c.name === "commande-adin")
         sChannel.send(embed)
+
 
 };
 
