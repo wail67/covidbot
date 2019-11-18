@@ -5,13 +5,12 @@ const superagent = require("superagent")
 module.exports.run = async (client, message, args, warns) => {
   if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
 
-    let bannedMember = await client.fetchUser(args[1])
-        if(!bannedMember) return message.channel.send("Please provide a user id to unban someone!")
-
+    let bannedMember = client.fetchUser(args[1])
+    if(!bannedMember) return message.channel.send("Please provide a user id to unban someone!")
+    
     let reason = args.slice(2).join(" ")
         if(!reason) reason = "No reason given!"
-    message.channel.send(args)
-    if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command!")|
+    if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command!")|
     message.delete()
     try {
         message.guild.unban(bannedMember, {reason: reason})
