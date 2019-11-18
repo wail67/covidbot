@@ -25,13 +25,14 @@ module.exports.run = (client, message, args, warns) => {
         let reason = args.slice(2).join(" ");
         let day = args.slice(3).join(" ");
         console.log(day);
-        member.guild
-          .ban(member, {
-            days: day,
-            reason: reason
-          })
+        member.guild.ban(member, {days: 7, reason: "Insultes"})
           .then(() => {
-            message.reply(`${user.tag} a été ban avec succès `);
+      let embed = new Discord.RichEmbed()
+      .setAuthor(message.author)
+      .addField("Ban par" + message.author)
+      .addField("Id : " + member.guild)
+      .setTimestamp();
+    message.channel.get("644670906375077898").send(embed);
           })
           .catch(err => {
             message.reply("Je n'ai pas la permission de ban cette personne");
