@@ -10,7 +10,8 @@
     "discord.js": "^11.5.1",
     "express": "^4.16.4",
     "fs": "^0.0.2",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "superagent": "^5.1.0"
   },
   "engines": {
     "node": "8.x"
