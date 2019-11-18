@@ -22,11 +22,11 @@ module.exports.run = (client, message, args, warns) => {
     if (user) {
       const member = message.guild.member(user);
       if (member) {
-        let reason = args.slice(2).join(" ");
+        let reason = args[2]
         if(!reason) return
-        let day = args.slice().join(" ");
-        message.channel.send(day)
-        member.guild.ban(member, {days: 7, reason: reason})
+
+}        message.channel.send(day)
+        member.guild.ban(member, {days: day, reason: reason})
           .then(() => {
       let embed = new Discord.RichEmbed()
       .setColor('#ed2c13')
@@ -35,6 +35,7 @@ module.exports.run = (client, message, args, warns) => {
       .addField("Pseudo", + member)
       .addField("Id : ",""+ member.guild.id)
       .addField("Raison : ",""+ reason)
+      .addField("Pour : ",""+ day+ " jours")
       .setTimestamp();
     message.channel.send(embed);
           })
