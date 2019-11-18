@@ -24,9 +24,8 @@ module.exports.run = (client, message, args, warns) => {
       if (member) {
         let reason = args.slice(2).join(" ");
         if(!reason) return
-        let day = args.slice(0).join("for");
-        console.log(day)
-        console.log(day);
+        let day = args.slice().join(" ");
+        message.channel.send(day)
         member.guild.ban(member, {days: 7, reason: reason})
           .then(() => {
       let embed = new Discord.RichEmbed()
