@@ -9,8 +9,6 @@ module.exports.run = async (client, message, args, warns) => {
 
 		
 	if(isNaN(args[1])) return message.channel.send("You need to provide an ID.")
-  const member = message.guild.member(args[1])
-  message.reply(member)
     let bannedMember = await client.fetchUser(args[1])
         if(!bannedMember) return message.channel.send("Please provide a user id to unban someone!")
 
