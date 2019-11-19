@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args, warns) => {
         if (!args[2])
             return message.channel.send("Please provide a reason for the report").then(m => m.delete(5000));
         
-        const channel = message.guild.channels.find(c => c.name === "reports")
+        let channel = message.guild.channels.find("name","reports")
         // No channel found
         if (!channel)
             return message.channel.send("Couldn't find a `#reports` channel").then(m => m.delete(5000));
