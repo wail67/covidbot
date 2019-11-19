@@ -10,7 +10,6 @@ module.exports.run = async (client, message, args, warns) => {
 
     let reason = args.slice(2).join(" ")
         if(!reason) reason = "No reason given!"
-    message.channel.send(args)
     if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command!")|
     message.delete()
     try {
