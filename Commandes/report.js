@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require("fs");
 const superagent = require("superagent")
-const  stripIndents  = require("common-tags");
+const  {stripIndents}  = require("common-tags");
 
 
 module.exports.run = async (client, message, args, warns) => {
@@ -22,11 +22,7 @@ module.exports.run = async (client, message, args, warns) => {
         if (!args[2])
             return message.channel.send("Please provide a reason for the report").then(m => m.delete(5000));
         
-        let channel = message.guild.channels.find("name","reports")
-        // No channel found
-        if (!channel)
-            return message.channel.send("Couldn't find a `#reports` channel").then(m => m.delete(5000));
-
+        
         const embed = new Discord.RichEmbed()
             .setColor("#ff0000")
             .setTimestamp()
@@ -37,7 +33,7 @@ module.exports.run = async (client, message, args, warns) => {
             **> Reported in:** ${message.channel}
             **> Reason:** ${args.slice(2).join(" ")}`);
 
-        return channel.send(embed);
+        return message.guild.channels.get("646405231239757844").send(embed);
 };
 
 module.exports.help = {
