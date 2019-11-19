@@ -12,7 +12,7 @@
     "fs": "^0.0.2",
     "moment": "^2.24.0",
     "superagent": "^5.1.0",
-    "common-tags": "^5.1.0"
+    "common-tags": "^1.8.0"
   },
   "engines": {
     "node": "8.x"

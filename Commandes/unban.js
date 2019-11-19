@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args, warns) => {
     .addField("Reason:", reason)
     .addField("Date:", message.createdAt.toLocaleString())
     
-        let sChannel = message.guild.channels.find(c => c.name === "commande-admin")
+        let sChannel = message.guild.channels.find("name","commande-admin")
         sChannel.send(embed)
 
 };
