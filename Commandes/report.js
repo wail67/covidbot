@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require("fs");
 const superagent = require("superagent")
-const  stripIndents  = require("common-tags");
+const  {stripIndents}  = require("common-tags");
 
 
 module.exports.run = async (client, message, args, warns) => {
@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args, warns) => {
             .setTimestamp()
             .setFooter(message.guild.name, message.guild.iconURL)
             .setAuthor("Reported member", rMember.user.displayAvatarURL)
-            .setDescription(`**> Member:** ${rMember} (${rMember.user.id})
+            .setDescription(stripIndents`**> Member:** ${rMember} (${rMember.user.id})
             **> Reported by:** ${message.member}
             **> Reported in:** ${message.channel}
             **> Reason:** ${args.slice(2).join(" ")}`);
