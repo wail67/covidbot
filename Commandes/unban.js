@@ -3,28 +3,24 @@ const fs = require("fs");
 const superagent = require("superagent")
 
 module.exports.run = async (client, message, args, warns) => {
- 
+  if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
 
-    if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
-
-		
-	if(isNaN(args[1])) return message.channel.send("You need to provide an ID.")
     let bannedMember = await client.fetchUser(args[1])
         if(!bannedMember) return message.channel.send("Please provide a user id to unban someone!")
 
     let reason = args.slice(2).join(" ")
         if(!reason) reason = "No reason given!"
-
+    message.channel.send(args)
     if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command!")|
     message.delete()
     try {
-        message.guild.unban(bannedMember, reason)
+        message.guild.unban(bannedMember, {reason: reason})
         message.channel.send(`${bannedMember.tag} has been unbanned from the guild!`)
     } catch(e) {
         console.log(e.message)
     }
 
-    let embed = new RichEmbed()
+    let embed = new Discord.RichEmbed()
     .setColor("#f94343")
     .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
     .addField("Moderation:", "unban")
@@ -33,9 +29,8 @@ module.exports.run = async (client, message, args, warns) => {
     .addField("Reason:", reason)
     .addField("Date:", message.createdAt.toLocaleString())
     
-        let sChannel = message.guild.channels.find(c => c.name === "commande-adin")
+        let sChannel = message.guild.channels.find(c => c.name === "commande-admin")
         sChannel.send(embed)
-
 
 };
 
