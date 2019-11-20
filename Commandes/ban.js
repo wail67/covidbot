@@ -54,5 +54,8 @@ module.exports.run = (client, message, args, warns) => {
 };
 
 module.exports.help = {
-    name: 'ban'
+    name: 'ban',
+    description: "Bans a user from the guild!",
+    usage: "!ban",
+    aliases: ["b", "banish", "remove"]
 };

@@ -33,7 +33,7 @@ module.exports.run = async (client, message, args, warns) => {
             **> Reported in:** ${message.channel}
             **> Reason:** ${args.slice(2).join(" ")}`);
 
-        return message.guild.channels.get("646405231239757844").send(embed);
+        return message.guild.channels.get("646719645721690152").send(embed);
 };
 
 module.exports.help = {
