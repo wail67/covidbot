@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-client.aliases = new Discord
+client.aliases = new Discord.Collection();
 const fs = require("fs");
 const superagent = require("superagent")
 
@@ -26,13 +26,16 @@ fs.readdir('./Commandes/', (error, f) => {
    if (error) { return console.error(error); }
         let commandes = f.filter(f => f.split('.').pop() === 'js');
         console.log(commandes.length)
-        commandes.forEach((f) => {
-            let commande = require(`./Commandes/${f}`);
-            console.log(`${f} commande chargée !`);
-            client.commands.set(commande.help.name, commande);
+       commandes.forEach((f, i) => {
+        let pull = require(`./Commandes/${f}`);
+        client.commands.set(pull.help.name, pull);  
+        pull.help.aliases.forEach(alias => {
+          client.aliases.set(alias, pull.help.name)
         });
+    });
+        });
+        
   
-});
 
 fs.readdir('./Events/', (error, f) => {
     if (error) { return console.error(error); }

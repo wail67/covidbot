@@ -21,5 +21,6 @@ module.exports.run = (client, message, args,warns) => {
 }  ;
 
 module.exports.help = {
-    name: 'infra'
+    name: 'infra',
+    aliases: ["inf","infraction"]
 };

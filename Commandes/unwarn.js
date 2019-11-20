@@ -27,5 +27,6 @@ module.exports.run = (client, message, args,warns) => {
   ;
 
 module.exports.help = {
-    name: 'unwarn'
+    name: 'unwarn',
+  aliases: ["unwarning"]
 };

@@ -34,5 +34,6 @@ module.exports.run = async (client, message, args, warns) => {
 };
 
 module.exports.help = {
-    name: 'unban'
+    name: 'unban',
+  aliases: ["ub", "unbanish", "unremove"]
 };

@@ -37,5 +37,6 @@ module.exports.run = async (client, message, args, warns) => {
 };
 
 module.exports.help = {
-    name: 'report'
+    name: 'report',
+  aliases: ["rp","rep"]
 };

@@ -32,5 +32,6 @@ module.exports.run = (client, message, args,warns) => {
   ;
 
 module.exports.help = {
-    name: 'warn'
+    name: 'warn',
+  aliases: ["warning"]
 };
