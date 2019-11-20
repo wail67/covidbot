@@ -34,6 +34,5 @@ module.exports.run = (client, message, args) => {
 };
 
 module.exports.help = {
-    name: 'kick',
-    aliases: ["kc","kk"]
+    name: 'kick'
 };

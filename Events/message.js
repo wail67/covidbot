@@ -11,7 +11,7 @@ module.exports = (client, message) => {
         let arg = message.content.slice(prefix.length).trim().split(/ +/g);
         let args = message.content.trim().split(/ +/g)
         let commande = arg.shift();
-        let cmd = client.commands.get(commande) || client.commands.get(client.aliases.get(commande))
+        let cmd = client.commands.get(commande);
 
         if (!cmd) { return; }
             cmd.run(client, message, args,warns);
