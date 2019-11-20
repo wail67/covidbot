@@ -34,7 +34,7 @@ module.exports.run = (client, message, args, warns) => {
       .setAuthor("Mon Bot")
       .addField("Ban par:",""+ message.author.username)
       .addField("Pseudo", + member)
-      .addField("Id : ",""+ member.guild.id)
+      .addField("Id : ",""+ member.user.id)
       .addField("Raison : ",""+ reason)
       .addField("Pour : ",""+ day+ " jours")
       .setTimestamp();

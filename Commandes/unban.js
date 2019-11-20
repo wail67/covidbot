@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const fs = require("fs");
 const superagent = require("superagent")
+const  {stripIndents}  = require("common-tags");
+
 
 module.exports.run = async (client, message, args, warns) => {
   if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
@@ -22,13 +24,12 @@ module.exports.run = async (client, message, args, warns) => {
     let embed = new Discord.RichEmbed()
     .setColor("#f94343")
     .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
-    .addField("Moderation:", "unban")
-    .addField("Moderated on:", `${bannedMember.username} (${bannedMember.id})`)
-    .addField("Moderator:", message.author.username)
-    .addField("Reason:", reason)
-    .addField("Date:", message.createdAt.toLocaleString())
+    .setDescription(stripIndents`**> Type :** unban
+            **> Modérateur :** ${message.author}
+            **> Le Revenant :** ${bannedMember.username} (${bannedMember.id})
+            **> Raison de la plainte:** ${reason}`);
     
-        let sChannel = message.guild.channels.find("name","commande-admin")
+        let sChannel = message.guild.channels.find("name","log-ban")
         sChannel.send(embed)
 
 };
