@@ -20,15 +20,15 @@ module.exports.run = async (client, message, args, warns) => {
     }
 
     let embed = new Discord.RichEmbed()
-    .setColor("#f94343")
+    .setColor("#3cdb0c")
     .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
     .addField("Moderation:", "unban")
     .addField("Moderated on:", `${bannedMember.username} (${bannedMember.id})`)
     .addField("Moderator:", message.author.username)
     .addField("Reason:", reason)
-    .addField("Date:", message.createdAt.toLocaleString())
+    .addField("Date:", (message.createdTimestamp + 3600).toLocalString())
     
-        let sChannel = message.guild.channels.find("name","commande-admin")
+        let sChannel = message.guild.channels.find("name","log-ban")
         sChannel.send(embed)
 
 };
