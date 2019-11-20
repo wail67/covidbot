@@ -27,13 +27,13 @@ module.exports.run = async (client, message, args, warns) => {
             .setColor("#ff0000")
             .setTimestamp()
             .setFooter(message.guild.name, message.guild.iconURL)
-            .setAuthor("Reported member", rMember.user.displayAvatarURL)
-            .setDescription(stripIndents`**> Member:** ${rMember} (${rMember.user.id})
-            **> Reported by:** ${message.member}
-            **> Reported in:** ${message.channel}
-            **> Reason:** ${args.slice(2).join(" ")}`);
+            .setAuthor("Report", rMember.user.displayAvatarURL)
+            .setDescription(stripIndents`**> L'accusé:** ${rMember} (${rMember.user.id})
+            **> Plainte déposé par:** ${message.member}
+            **> Lieu de la déposition de plainte:** ${message.channel}
+            **> Raison de la plainte:** ${args.slice(2).join(" ")}`);
 
-        return message.guild.channels.get("646405231239757844").send(embed);
+        return message.guild.channels.get("646719645721690152").send(embed);
 };
 
 module.exports.help = {
