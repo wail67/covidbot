@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-client.aliases = new Discord
 const fs = require("fs");
 const superagent = require("superagent")
 
