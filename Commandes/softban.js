@@ -15,16 +15,16 @@ module.exports.run = async (client, message, args, warns) => {
 
    if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command")
 
-   banMember.send(`Salut, tu as été ban de ${message.guild.name} pour: ${reason}. Essaye de te faire discret quand tu pourra revenir`).then(() =>
-   message.guild.ban(banMember, { days: 2, reason: reason})).catch(err => console.log(err))
+   banMember.send(`Hello, you have been banned from ${message.guild.name} for: ${reason}`).then(() =>
+   message.guild.ban(banMember, { days: 1, reason: reason})).then(() => message.guild.unban(banMember.id, { reason: "Softban"})).catch(err => console.log(err))
 
    message.channel.send(`**${banMember.user.tag}** has been banned`).then(m => m.delete(5000))
 
     let embed = new Discord.RichEmbed()
     .setColor("#f94343")
     .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
-    .setDescription(stripIndents`**> L'accusé:** ${banMember} (${banMember.user.id})
-            **> Modérateur :** ${message.author}
+    .setDescription(stripIndents`**> L'accusé:**  (${banMember.user.id})
+            **> Modérateur par:** ${message.author}
             **> Raison de la plainte:** ${args.slice(2).join(" ")}`);
     
         let sChannel = message.guild.channels.find(c => c.name === "log-ban")
