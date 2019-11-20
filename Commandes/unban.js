@@ -2,7 +2,16 @@ const Discord = require('discord.js');
 const fs = require("fs");
 const superagent = require("superagent")
 
-module.exports.run = async (client, message, args, warns) => {
+module.exports = {
+    help:{
+        name: "unban",
+        description: "Unban a user from the guild!",
+        usage: "!unban",
+        category: "moderation",
+        accessableby: "Administrators",
+        aliases: ["ub", "unbanish"]
+    },
+  run :  async (client, message, args, warns) => {
   if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
 
     let bannedMember = await client.fetchUser(args[1])
@@ -31,9 +40,4 @@ module.exports.run = async (client, message, args, warns) => {
         let sChannel = message.guild.channels.find("name","commande-admin")
         sChannel.send(embed)
 
-};
-
-module.exports.help = {
-    name: 'unban',
-  aliases: ["ub", "unbanish", "unremove"]
-};
+}
