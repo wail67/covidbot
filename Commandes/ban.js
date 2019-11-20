@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const fs = require("fs");
+const  {stripIndents}  = require("common-tags");
+
 
 module.exports.run = (client, message, args, warns) => {
     if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
@@ -18,39 +20,31 @@ module.exports.run = (client, message, args, warns) => {
       return message.channel.bulkDelete(2, true);
     }
 
-    const user = message.mentions.users.first();
-    if (user) {
-      const member = message.guild.member(user);
-      if (member) {
-        let reason = args[2].split('&nbsp').join(' ')
-        if(!reason) return
-        let day = args[3]
+     if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You do not have permission to perform this command!")
 
-        message.channel.send(day)
-        member.guild.ban(member, {days: day, reason: reason})
-          .then(() => {
-      let embed = new Discord.RichEmbed()
-      .setColor('#ed2c13')
-      .setAuthor("Mon Bot")
-      .addField("Ban par:",""+ message.author.username)
-      .addField("Pseudo", + member)
-      .addField("Id : ",""+ member.guild.id)
-      .addField("Raison : ",""+ reason)
-      .addField("Pour : ",""+ day+ " jours")
-      .setTimestamp();
-    message.channel.send(embed);
-          })
-          .catch(err => {
-            message.reply("Je n'ai pas la permission de ban cette personne");
-            console.error(err);
-          });
-      } else {
-        // The mentioned user isn't in this guild
-        message.reply("Cette personne n'est pas présente sur le serveur");
-      }
-    } else {
-      message.reply("Tu n'a pas mentionné la personne à ban !");
-    }
+   let banMember = message.mentions.members.first() || message.guild.members.get(args[0]) 
+   if(!banMember) return message.channel.send("Please provide a user to ban!")
+
+   let reason = args.slice(1).join(" ");
+   if(!reason) reason = "No reason given!"
+
+   if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command")
+
+   banMember.send(`Hello, you have been banned from ${message.guild.name} for: ${reason}`).then(() =>
+   message.guild.ban(banMember, { days: 1, reason: reason})).catch(err => console.log(err))
+
+   message.channel.send(`**${banMember.user.tag}** has been banned`).then(m => m.delete(5000))
+
+    let embed = new Discord.RichEmbed()
+    .setColor('#f94343')
+    .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
+    .setDescription(stripIndents`**> L'accusé:**  ${banMember.user.username} (${banMember.user.id}))
+            **> Modérateur:** ${message.author}
+            **> Raison de la plainte:** ${args.slice(2).join(" ")}`);
+    
+        let sChannel = message.guild.channels.find(c => c.name === "log-ban")
+        sChannel.send(embed)
+    
 };
 
 module.exports.help = {
