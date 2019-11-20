@@ -26,7 +26,7 @@ module.exports.run = async (client, message, args, warns) => {
     .addField("Moderated on:", `${bannedMember.username} (${bannedMember.id})`)
     .addField("Moderator:", message.author.username)
     .addField("Reason:", reason)
-    .addField("Date:", message.createdAt.toLocaleString())
+    .addField("Date:", (message.createdAt+3600).toLocaleString())
     
         let sChannel = message.guild.channels.find("name","commande-admin")
         sChannel.send(embed)
