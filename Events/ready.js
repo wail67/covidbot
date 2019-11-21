@@ -1,7 +1,7 @@
 module.exports = (client) => {
     client.user.setPresence({
         game: {
-            name: "Baise tes mort"
+            name: "!help et je viens à ton secours"
         }
     });
 };
