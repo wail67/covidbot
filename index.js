@@ -9,6 +9,7 @@ const superagent = require("superagent")
 
 
 client.on("guildMemberAdd", user => {
+  let embed = Discord.newRichEmbed()
   user.guild.channels
     .get("642763590985580594")
     .send("Bienvenue " + user + " sur le serveur " + user.guild.name + "!");
