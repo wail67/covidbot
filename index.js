@@ -8,12 +8,13 @@ client.login(process.env.TOKEN);
 
 
 
-client.on('message', msg => {
-  if (msg.guild && msg.content.startsWith('!private')) {
-    let text = msg.content.slice('/private'.length);// cuts off the /private part
-    msg.guild.members.forEach(member => {
-      console.log(member.user.tag.guild.member)
-      member.guild
-    });
+client.on('message',  message => {
+  if (message.guild && message.content.startsWith('!private')) {
+   let role = message.guild.roles.find(r => r.name == 'Membre')
+
+if (!role) return message.channel.send(`**${message.author.username}**, role not found`)
+
+message.guild.members.filter(m => !m.user.bot).forEach(member => member.addRole(role))
+message.channel.send(`**${message.author.username}**, role **${role.name}** was added to all members`)
   }
 });
