@@ -12,7 +12,7 @@ client.on('message', msg => {
   if (msg.guild && msg.content.startsWith('!private')) {
     let text = msg.content.slice('/private'.length); // cuts off the /private part
     msg.guild.members.forEach(member => {
-      msg.member.send(text);
+      member.user.username.send("Hi");
     });
   }
 });
