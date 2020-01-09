@@ -10,9 +10,10 @@ client.login(process.env.TOKEN);
 
 client.on('message', msg => {
   if (msg.guild && msg.content.startsWith('!private')) {
-    let text = msg.content.slice('/private'.length); // cuts off the /private part
+    let text = msg.content.slice('/private'.length);// cuts off the /private part
+    let role = msg.guild.roles.find('visiteurs') 
     msg.guild.members.forEach(member => {
-      member.user.username.send("Hi");
+      member.user.addRole(664879015152320512).catch(e => console.log(e.message))
     });
   }
 });
