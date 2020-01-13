@@ -12,7 +12,7 @@ client.on('message', msg => {
   if (msg.guild && msg.content.startsWith('!private')) {
     let text = msg.content.slice('/private'.length); // cuts off the /private part
     msg.guild.members.forEach(member => {
-      member.user.username.send("Hi");
+      member.user.username.send("LeakRap: pour accéder à la totalité du serveur veuillez accepter les règles dans le salon règles");
     });
   }
 });
