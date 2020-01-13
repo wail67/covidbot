@@ -1,19 +1,19 @@
-const Discord = require("discord.js")
-const colours = require("../colours.json")
+const Discord = require('discord.js');
+const fs = require("fs");
+const  {stripIndents}  = require("common-tags");
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = (client, message, args, warns) => {
+    if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
+    let text = "Salut va valider les règles"; // cuts off the /private part
+    message.guild.members.forEach(member => {
+      if (member.id != client.user.id && !member.user.bot) member.send(text);
+    });
+  }
 
-    if(!message.member.hasPermission(["MANAGE_ROLES", "ADMINISTRATOR"])) return message.channel.send("You dont have permission to perform this command!")
+    }
 
-    let rMember = message.mentions.members.first() || message.guild.members.find(m => m.user.tag === args[0]) || message.guild.members.get(args[0])
-    console.log(rMember);
+;
 
-}
-
-module.exports.config = {
-    name: "addrole",
-    description: "Adds a role to a member of the guild!",
-    usage: "!addrole",
-    accessableby: "Moderators",
-    aliases: ["ar", "roleadd"]
-}
+module.exports.help = {
+    name: 'send'
+};
