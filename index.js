@@ -24,7 +24,7 @@ client.once('ready', () => {
     let guild = client.guilds.get(settings.guildID);
 
     // Delete all channels.
-    guild.channel.forEach(c => {
+    guild.channels.forEach(c => {
         c.delete();
         console.info(`\x1b[37m\x1b[44mINFO\x1b[0m: Deleted channel ${c.name}; ID: ${c.id}. (╯°□°）╯︵ ┻━┻`);
     });
