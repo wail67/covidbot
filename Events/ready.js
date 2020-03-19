@@ -1,7 +1,7 @@
 module.exports = (client) => {
     client.user.setPresence({
         game: {
-            name: "Skyrock"
+            name: "Stream Skyrock"
         }
     });
 };
