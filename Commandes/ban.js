@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const fs = require("fs");
-const  {stripIndents}  = require("common-tags");
 
 module.exports.run = (client, message, args, warns) => {
     if (!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) {
@@ -31,14 +30,15 @@ module.exports.run = (client, message, args, warns) => {
         member.guild.ban(member, {days: day, reason: reason})
           .then(() => {
       let embed = new Discord.RichEmbed()
-    .setColor("#f94343")
-    .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
-    .setDescription(stripIndents`**> L'accusé:**  (${member.user.id})
-            **> Modérateur par:** ${message.author}
-            **> Raison de la plainte:** ${args.slice(2).join(" ")}`);
-    
-        let sChannel = message.guild.channels.find(c => c.name === "log-ban")
-        sChannel.send(embed)
+      .setColor('#ed2c13')
+      .setAuthor("Mon Bot")
+      .addField("Ban par:",""+ message.author.username)
+      .addField("Pseudo", + member)
+      .addField("Id : ",""+ member.guild.id)
+      .addField("Raison : ",""+ reason)
+      .addField("Pour : ",""+ day+ " jours")
+      .setTimestamp();
+    message.channel.send(embed);
           })
           .catch(err => {
             message.reply("Je n'ai pas la permission de ban cette personne");
