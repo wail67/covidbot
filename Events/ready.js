@@ -1,7 +1,8 @@
 module.exports = (client) => {
+  guild = client.guild.size
     client.user.setPresence({
         game: {
-            name: "Stream Skyrock"
+            name: "Stream Skyrock sur"+ guild
         }
     });
 };
