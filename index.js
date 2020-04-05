@@ -5,25 +5,9 @@ const fs = require("fs");
 const superagent = require("superagent")
 
 
-
-
-
-client.on("guildMemberAdd", user => {
-  user.guild.channels
-    .get("642763590985580594")
-    .send("Bienvenue " + user + " sur le serveur " + user.guild.name + "!");
-  user.guild.channels
-    .get("642763590985580594")
-    .send(
-      "https://giphy.com/gifs/welcome-austin-powers-dr-evil-l0MYC0LajbaPoEADu"
-    );
-});
-
-
-
 fs.readdir('./Commandes/', (error, f) => {
    if (error) { return console.error(error); }
-        let commandes = f.filter(f => f.split('.').pop() === 'js');
+        let commandes = f.filter(f => f.split('.').pop() === 'ts');
         console.log(commandes.length)
         commandes.forEach((f) => {
             let commande = require(`./Commandes/${f}`);
